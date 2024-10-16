@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [files, setFiles] = useState([])
+  const [selectedFile, setSelectedFile] = useState(null)
   const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
@@ -14,25 +15,30 @@ export default function Home() {
     setFiles(data)
   }
 
-  async function handleFileUpload(event) {
+  function handleFileChange(event) {
     const file = event.target.files[0]
-    if (file) {
+    setSelectedFile(file)
+  }
+
+  async function handleFileUpload() {
+    if (selectedFile) {
       const reader = new FileReader()
       reader.onload = async (e) => {
         const base64 = e.target.result
         const response = await fetch('/.netlify/functions/uploadFile', {
           method: 'POST',
-          body: JSON.stringify({ name: file.name, content: base64 }),
+          body: JSON.stringify({ name: selectedFile.name, content: base64 }),
         })
 
         if (response.ok) {
           setSuccessMessage('File uploaded successfully!')
+          setSelectedFile(null)
           fetchFiles()
         } else {
           setSuccessMessage('Failed to upload file.')
         }
       }
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(selectedFile)
     }
   }
 
@@ -48,9 +54,9 @@ export default function Home() {
   return (
     <div>
       <h1>TeleDrive</h1>
-      <input type="file" onChange={handleFileUpload} />
-      <button onClick={() => document.querySelector('input[type="file"]').click()}>
-        Upload File
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleFileUpload} disabled={!selectedFile}>
+        Submit
       </button>
       {successMessage && <p>{successMessage}</p>}
       <ul>
