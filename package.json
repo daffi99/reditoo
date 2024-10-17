@@ -1,0 +1,27 @@
+{
+  "name": "teledrive",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@netlify/functions": "^2.8.2",
+    "next": "latest",
+    "node-fetch": "^3.3.1",
+    "react": "latest",
+    "react-dom": "latest",
+    "telegraf": "^4.12.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14"
+  }
+}
